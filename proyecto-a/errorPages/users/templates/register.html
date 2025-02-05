@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    
+</head>
+<body>
+  
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Registro</h5>
+                <form method="post" class="form-group" onsubmit="return validateForm()">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Registrarse</button>
+                </form>
+                <div id="alert-container"></div>
+            </div>
+        </div>
+    </div>
+   
+</body>
+
+<script>
+    function validateForm() {
+        var pass1 = document.getElementById("id_password1").value;
+        var pass2 = document.getElementById("id_password2").value;
+        var alertContainer = document.getElementById("alert-container");
+        alertContainer.innerHTML = "";
+
+        if (pass1.length < 8) {
+            showAlert("La contraseña debe tener al menos 8 caracteres");
+            return false;
+        }
+        if (/^\d+$/.test(pass1)) {
+            showAlert("La contraseña no puede ser completamente numérica");
+            return false;
+        }
+        if (pass1.toLowerCase() === pass1) {
+            showAlert("La contraseña debe tener al menos una letra mayúscula");
+            return false;
+        }
+     
+        if (pass1 !== pass2) {
+            showAlert("Las contraseñas no coinciden");
+            return false;
+        }
+        return true;
+    }
+
+    function showAlert(message) {
+        var alertContainer = document.getElementById("alert-container");
+        var alertDiv = document.createElement("div");
+        alertDiv.className = "alert alert-danger";
+        alertDiv.innerText = message;
+        alertContainer.appendChild(alertDiv);
+    }
+
+
+
+</script>
+</html>
