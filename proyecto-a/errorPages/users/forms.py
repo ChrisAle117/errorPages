@@ -7,10 +7,35 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.contrib.auth import authenticate
 
-
-
-
 class CustomUserCreationForm(UserCreationForm):
+    
+    password1= forms.CharField(
+        label='Contraseña',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Contraseña',
+                'required': True,
+                'pattern': '(?=.*[!#$%&?])(?=.*\d).{8,}',
+                'title': 'La contraseña debe tener al menos 8 caracteres, un número y un símbolo (!, #, $, %, & o ?).',
+                'minlength': 8
+            }
+        )
+    )
+    password2= forms.CharField(
+        label='Confirmar contraseña',
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Confirmar contraseña',
+                'required': True,
+                'pattern': '(?=.*[!#$%&?])(?=.*\d).{8,}',
+                'title': 'La contraseña debe tener al menos 8 caracteres, un número y un símbolo (!, #, $, %, & o ?).',
+                'minlength': 8
+            }
+        )
+    )
+    
     class Meta:
         model = CustomUser
         fields = ['email', 'name', 'surname', 'control_number', 'age', 'tel', 'password1', 'password2']
@@ -20,7 +45,7 @@ class CustomUserCreationForm(UserCreationForm):
                     'class': 'form-control',
                     'placeholder': 'Correo electrónico',
                     'required': True,
-                    'pattern': '^[a-zA-Z0-9._%+-]+@utez\.edu\.mx$',
+                    'pattern': '^[a-zA-Z0-9]+@utez\.edu\.mx$',
                     'title': 'Por favor, ingrese un correo electrónico de la UTEZ.',
                     'maxlength': 254,
                     'minlength': 8
@@ -34,7 +59,7 @@ class CustomUserCreationForm(UserCreationForm):
                     'pattern': '[A-Za-z]+',
                     'title': 'El nombre no debe de contener numeros.',
                     'maxlength': 100,
-                    'minlength': 10
+                    'minlength': 20
                 }
             ),
             'surname': forms.TextInput(
@@ -45,7 +70,7 @@ class CustomUserCreationForm(UserCreationForm):
                     'pattern': '[A-Za-z]+',
                     'title': 'El nombre no debe de contener numeros.',
                     'maxlength': 100,
-                    'minlength': 10
+                    'minlength': 20
                 }
             ),
             'control_number': forms.TextInput(
@@ -54,9 +79,9 @@ class CustomUserCreationForm(UserCreationForm):
                     'placeholder': 'Número de control',
                     'required': True,
                     'pattern': '^\d{5}TN\d{3}$',
+                    'title': 'El número de control debe ser una matrícula de la utez.',
                     'minlength': 6,
-                    'maxlength': 20,
-                    'title': 'El número de control debe de cumplir con el formato de la utez.'
+                    'maxlength': 10,
                 }
             ),
             'age': forms.NumberInput(
@@ -64,8 +89,8 @@ class CustomUserCreationForm(UserCreationForm):
                     'class': 'form-control',
                     'placeholder': 'Edad',
                     'required': True,
-                    'min': 0,
-                    'max': 120,
+                    'min': 18,
+                    'max': 100,
                     'title': 'La edad debe estar entre 18 y 100 años.'
                 }
             ),
@@ -78,28 +103,6 @@ class CustomUserCreationForm(UserCreationForm):
                     'title': 'El teléfono debe tener 10 dígitos.'
                 }
             ),
-            'password1': forms.PasswordInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Contraseña',
-                    'required': True,
-                    'pattern': '(?=.*[!#$%&?])(?=.*\d).{8,}',
-                    'title': 'La contraseña debe tener al menos 8 caracteres, un número y un símbolo (!, #, $, %, & o ?).',
-                    'minlength': 8
-                }
-            ),
-            'password2': forms.PasswordInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Confirmar contraseña',
-                    'required': True,
-                    'pattern': '(?=.*[!#$%&?])(?=.*\d).{8,}',
-                    'title': 'La contraseña debe tener al menos 8 caracteres, un número y un símbolo (!, #, $, %, & o ?).',
-                    'minlength': 8
-                }
-            )
-            
-            
         }
 
     def clean_email(self):

@@ -12,6 +12,9 @@ def register_view(request):
             user = form.save()
             login(request, user)
             return redirect('home')
+        else:
+            errors = form.errors.as_json()
+            return render(request, 'register.html', {'form': form, 'errors': errors})
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
@@ -23,6 +26,9 @@ def login_view(request):
             user = form.get_user()
             login(request, user)
             return redirect('home')
+        else:
+            errors = form.errors.as_json()
+            return render(request, 'login.html', {'form': form, 'errors': errors})
     else:
         form = CustomUserLoginForm()
     return render(request, 'login.html', {'form': form})
